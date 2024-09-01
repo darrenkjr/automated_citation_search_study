@@ -1,4 +1,4 @@
-This repository contains code necessary to replicate experiments and analyses necessary for the paper: Automated Citation Searching in Systematic Review Production : A Simulation Study
+This repository contains code necessary to replicate experiments and analyses necessary for the paper: Automated Citation Searching in Systematic Review Production : A Simulation Study (Currently under Review)
 
 The repository contains 2 subdirectories 
 * analysis : Containing code required to run the analysis and generate tables and figures as contained within the main manuscript.
