@@ -30,7 +30,7 @@ class main:
         mlruns_dir.mkdir(exist_ok=True)
 
         # CHOICE between openalex and semanticscholar
-        api_choice = ['semanticscholar']
+        api_choice = ['openalex']
     
         #setting up experiment in mlflow
         experiment_name = date_time + '_' + 'citation_search_' + current_batch + '_full' + api_choice[0]
