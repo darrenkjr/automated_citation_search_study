@@ -12,6 +12,7 @@ import re
 import numpy as np
 from numpy import NaN
 import logging 
+from pathlib import Path
 
 class original_review:
 
@@ -24,12 +25,17 @@ class original_review:
     def __init__(self,file_path,current_batch, api_choice):
 
         self.logger = logging.getLogger(__name__)
-        self.file_path = os.path.join(file_path)
+        current_dir = Path(__file__).parent  # libraries/
+        project_root = current_dir.parent.parent  # automated_citation_search_study/
+    
+        # Construct path to review_data relative to project root
+        self.file_path = project_root / 'experiment' /file_path
+        
         self.api_choice = api_choice
         self.citation_limit = 10000
         self.current_batch = current_batch
         #read in excel workbook with data on original review 
-        if self.file_path.endswith('.xlsx'):
+        if str(self.file_path).endswith('.xlsx'):
             self.workbook_dict = pd.read_excel(self.file_path,sheet_name=None, dtype = {'included_pmid': str, 'seed_pmid':str, 'included_mag_id' : str})
             self.basic_data_with_exclude = self.workbook_dict['sys_rev_data']
             #convert all ids to lowercase
@@ -90,7 +96,10 @@ class original_review:
             self.prep_seed_articles()  
             
             self.logger.info('Included article and seed article retrieval complete')
-            file_path_updated = 'results/sr_samples_{}_{}.xlsx'.format(self.current_batch, self.current_api)
+
+            results_dir = Path("results")  # Goes up to experiment/ then into results/
+            results_dir.mkdir(exist_ok=True)
+            file_path_updated = results_dir / f'sr_samples_{self.current_batch}_{self.current_api}.xlsx'
 
             #copy excel workbook and update with data on original reviews and included articles 
             with pd.ExcelWriter(file_path_updated, engine="xlsxwriter", mode="w") as writer:
@@ -245,8 +254,6 @@ class original_review:
             
         return df_copy
         
-        
-
 
     def generate_temp_sorting_column(self,df): 
         '''function to generate temporary sorting column for included articles dataframe'''
@@ -318,7 +325,10 @@ class original_review:
         '''function to generate intra cluster similarity for a dataframe where each entry is the abstract of the included article'''
         #load sentence bert trained on pubmed model from huggingface 
         model = SentenceTransformer('allenai-specter')
-        nltk.download('punkt')
+        try: 
+            nltk.data.find('tokenizers/punkt')
+        except LookupError: 
+            nltk.download('punkt')
         abstract_data_df = pd.DataFrame()
         #remove no abstract found and set to none
         title_abstract_data = title_abstract_data_in.copy()

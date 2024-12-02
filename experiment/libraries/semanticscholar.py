@@ -18,16 +18,18 @@ class semanticscholar_interface:
 
     def __init__(self,api_key): 
 
-        self.api_limit = AsyncLimiter(10,1)
+        self.api_limit = AsyncLimiter(5,1)
         self.session_timeout = aiohttp.ClientTimeout(total=600)
         self.pagination_limit = 500
         self.default_pagination_offset = 0
         self.max_retries = 5
         self.api_key = api_key
+        if api_key == 'REPLACE WITH API KEY':
+            raise ValueError('No API key provided')
         self.error_log = []
         self.fields = 'title,abstract,externalIds,referenceCount,citationCount,year,publicationVenue,journal,publicationTypes'
-        self.api_endpoint = 'https://partner.semanticscholar.org/graph/v1/paper/{id}/{citation_direction}?offset={offset}&limit={limit}&fields={fields}'
-        self.generic_paper_endpoint = 'https://partner.semanticscholar.org/graph/v1/paper/{id_type}:{id}?fields={fields}'
+        self.api_endpoint = 'https://api.semanticscholar.org/graph/v1/paper/{id}/{citation_direction}?offset={offset}&limit={limit}&fields={fields}'
+        self.generic_paper_endpoint = 'https://api.semanticscholar.org/graph/v1/paper/{id_type}:{id}?fields={fields}'
         self.logger = logging.getLogger(__name__)
         #set logger to warning and above
 

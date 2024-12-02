@@ -26,6 +26,6 @@ NB: Re-running the experiment requires an API Key from Semantic Scholar. This ca
 ---
 
 ## Experiment 
-1. Install the necessary python packages from requirements.txt
+1. Install the necessary python packages from requirements.txt (Ensure you have a virtual environment set up with Python Version 3.10.15)
 2. Modify the .env file with a semantic scholar api key. See https://www.semanticscholar.org/product/api for details to request an API key. 
 3. Run main.py

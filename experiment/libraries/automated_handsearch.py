@@ -22,6 +22,9 @@ class automated_handsearch:
         if api == 'openalex':
             self.api_interface = openalex_interface()
 
+        self.loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(self.loop)
+
     def process_rename_results(self, reference_df, citation_df, seed_id, year_limit_start, year_limit_end):
         reference_df['reference_or_citation'] = 'reference'
         citation_df['reference_or_citation'] = 'citation'
@@ -76,9 +79,9 @@ class automated_handsearch:
         article_df_copy = article_df.copy() 
         #check if seed_Id is null, if so, replace with seed_pmid
         print('Retrieving citations')
-        citations = asyncio.run(self.api_interface.retrieve_citations(article_df_copy))
+        citations = self.loop.run_until_complete(self.api_interface.retrieve_citations(article_df_copy))
         print('Retrieving references')
-        references = asyncio.run(self.api_interface.retrieve_references(article_df_copy))
+        references = self.loop.run_until_complete(self.api_interface.retrieve_references(article_df_copy))
         
 
         # if self.api == 'openalex':
@@ -138,10 +141,12 @@ class automated_handsearch:
         ris = asyncio.run(self.api_interface.to_ris(df))
         return ris
     
-    def retrieve_generic_paper_details(self, df): 
-        self.logger.info('Retrieving generic paper details for included articles, using ' + self.api + ' api.')
-        generic_results = asyncio.run(self.api_interface.retrieve_generic_paper_details(df))
-        return generic_results 
-
+    async def retrieve_generic_paper_details_async(self, df):
+        return await self.api_interface.retrieve_generic_paper_details(df)
+    
+    def retrieve_generic_paper_details(self, df):
+        # Use get_event_loop() instead of asyncio.run()
+        loop = asyncio.get_event_loop()
+        return loop.run_until_complete(self.retrieve_generic_paper_details_async(df))
 
     

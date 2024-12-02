@@ -19,18 +19,22 @@ class main:
         #todays date and time in str format 
         date_time = datetime.now().strftime("%d_%m_%Y_%H_%M")
         current_batch = 'cee'
-        data_dir = Path("review_data")
+        # Construct paths relative to project root
+            # Use relative paths from where the script is executed
+        data_path = Path("review_data") / f"sr_samples_full_{current_batch}.xlsx"
         logs_dir = Path("logs")
-        logs_dir.mkdir(parents=True, exist_ok=True)
-        #read in excel workbook with data on original review
-        api_choice = ['openalex']
+        mlruns_dir = Path("mlruns")
 
-        file_path = data_dir / f"sr_samples_full_{current_batch}.xlsx"
+        # Create directories if they don't exist
+        logs_dir.mkdir(exist_ok=True)
+        mlruns_dir.mkdir(exist_ok=True)
+
+        # CHOICE between openalex and semanticscholar
+        api_choice = ['semanticscholar']
     
         #setting up experiment in mlflow
         experiment_name = date_time + '_' + 'citation_search_' + current_batch + '_full' + api_choice[0]
-        current_experiment = mlflow.set_experiment(experiment_name)
-
+        current_experiment = mlflow.set_experiment(experiment_name) 
 
         #set up logging 
         self.logger = logging.getLogger(__name__)
@@ -41,7 +45,7 @@ class main:
 
         print('Instantiating original review class')
         
-        original_review_instance = original_review(file_path, current_batch, api_choice)
+        original_review_instance = original_review(data_path, current_batch, api_choice)
         #preps data re: original review, calculating recall, and retrieving data for included articles from openalex api
 
         original_review_instance.prep_data()
