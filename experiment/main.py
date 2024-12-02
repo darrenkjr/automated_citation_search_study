@@ -7,6 +7,7 @@ from libraries.review_preparation import original_review
 from datetime import datetime
 import numpy as np
 import json
+from pathlib import Path
 
 
 class main: 
@@ -18,9 +19,13 @@ class main:
         #todays date and time in str format 
         date_time = datetime.now().strftime("%d_%m_%Y_%H_%M")
         current_batch = 'cee'
+        data_dir = Path("review_data")
+        logs_dir = Path("logs")
+        logs_dir.mkdir(parents=True, exist_ok=True)
         #read in excel workbook with data on original review
         api_choice = ['openalex']
-        file_path = 'review_data/sr_samples_full_{}.xlsx'.format(current_batch)
+
+        file_path = data_dir / f"sr_samples_full_{current_batch}.xlsx"
     
         #setting up experiment in mlflow
         experiment_name = date_time + '_' + 'citation_search_' + current_batch + '_full' + api_choice[0]

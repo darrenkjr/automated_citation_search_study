@@ -4,6 +4,13 @@ The repository contains 2 subdirectories
 * analysis : Containing code required to run the analysis and generate tables and figures as contained within the main manuscript.
 * experiment: Containing code required to run the simulation study experiments
 
+System Requirements: 
+* Python Version 3.10.12 or later 
+* For non-Windows users (MacOs / Linux), file reference
+
+NB: Re-running the experiment requires an API Key from Semantic Scholar. This can be requested at https://www.semanticscholar.org/product/api 
+
+
 --- 
 
 # Instructions 
@@ -11,6 +18,7 @@ The repository contains 2 subdirectories
 1. Firstly clone the repository 
 
 ## Analysis
+
 1. Install the necessary python packages from requirements.txt
 2. Run the python notebook: simulation_study_working_manuscript.ipynb
 
