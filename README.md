@@ -19,8 +19,9 @@ NB: Re-running the experiment requires an API Key from Semantic Scholar. This ca
 
 ## Analysis
 
-1. Install the necessary python packages from requirements.txt
-2. Run the python notebook: simulation_study_working_manuscript.ipynb
+1. Install the necessary python packages from requirements.txt (Tested on Windows 10, and WSL 2 Ubuntu 22.04)
+2. Run the python notebook: simulation_study_working_manuscript.ipynb to recreate tables and figures 
+3. See Results/citation_mining_results/ for consolidated automated citation searching results. 
 
 ---
 
